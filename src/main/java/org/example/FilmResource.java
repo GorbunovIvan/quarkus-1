@@ -39,4 +39,13 @@ public class FilmResource {
                 .map(Film::getTitle)
                 .orElse("No film found with filmId " + filmId);
     }
+
+    @GET
+    @Path("/films/paged/{page}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public List<String> getFilmsPaged(int page) {
+        return filmRepository.paged(page)
+                .map(f -> String.format("%s (%d)", f.getTitle(), f.getReleaseYear()))
+                .toList();
+    }
 }

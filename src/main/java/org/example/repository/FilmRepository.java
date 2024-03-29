@@ -6,8 +6,10 @@ import jakarta.inject.Inject;
 import org.example.model.Film;
 import org.example.model.Film$;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 public class FilmRepository {
@@ -24,5 +26,15 @@ public class FilmRepository {
         return jpaStreamer.stream(Film.class)
                 .filter(Film$.filmId.equal(filmId))
                 .findAny();
+    }
+
+    public Stream<Film> paged(int page) {
+
+        int pageSize = 20;
+
+        return jpaStreamer.stream(Film.class)
+                .sorted(Comparator.comparing(Film::getReleaseYear))
+                .skip((long) (page-1) * pageSize)
+                .limit(pageSize);
     }
 }
