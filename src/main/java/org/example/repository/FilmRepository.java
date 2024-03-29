@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import com.speedment.jpastreamer.application.JPAStreamer;
+import com.speedment.jpastreamer.projection.Projection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.example.model.Film;
@@ -18,7 +19,8 @@ public class FilmRepository {
     JPAStreamer jpaStreamer;
 
     public List<Film> findAll() {
-        return jpaStreamer.stream(Film.class)
+        // Here we use Projection to avoid querying unnecessary fields from the database.
+        return jpaStreamer.stream(Projection.select(Film$.title, Film$.releaseYear))
                 .toList();
     }
 
@@ -32,7 +34,8 @@ public class FilmRepository {
 
         int pageSize = 20;
 
-        return jpaStreamer.stream(Film.class)
+        // Here we use Projection to avoid querying unnecessary fields from the database.
+        return jpaStreamer.stream(Projection.select(Film$.title, Film$.releaseYear))
                 .sorted(Comparator.comparing(Film::getReleaseYear))
                 .skip((long) (page-1) * pageSize)
                 .limit(pageSize);

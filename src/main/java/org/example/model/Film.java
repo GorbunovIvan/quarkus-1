@@ -64,4 +64,9 @@ public class Film {
             inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
     private List<Actor> actors = new ArrayList<>();
+
+    public Film(String title, Integer releaseYear) {
+        this.title = title;
+        this.releaseYear = releaseYear;
+    }
 }
