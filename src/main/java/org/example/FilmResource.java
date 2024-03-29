@@ -9,6 +9,7 @@ import org.example.model.Film;
 import org.example.repository.FilmRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/")
 public class FilmResource {
@@ -46,6 +47,17 @@ public class FilmResource {
     public List<String> getFilmsPaged(int page) {
         return filmRepository.paged(page)
                 .map(f -> String.format("%s (%d)", f.getTitle(), f.getReleaseYear()))
+                .toList();
+    }
+
+    @GET
+    @Path("/films/with-actors")
+    @Produces(MediaType.TEXT_PLAIN)
+    public List<String> withActors() {
+        return filmRepository.withActors()
+                .map(f -> String.format("%s (actors: %s)",
+                        f.getTitle(),
+                        f.getActors().stream().map(a -> String.format("%s %s", a.getFirstName(), a.getLastName())).collect(Collectors.joining(", "))))
                 .toList();
     }
 }

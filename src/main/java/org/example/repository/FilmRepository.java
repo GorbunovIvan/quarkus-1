@@ -2,6 +2,7 @@ package org.example.repository;
 
 import com.speedment.jpastreamer.application.JPAStreamer;
 import com.speedment.jpastreamer.projection.Projection;
+import com.speedment.jpastreamer.streamconfiguration.StreamConfiguration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.example.model.Film;
@@ -39,5 +40,10 @@ public class FilmRepository {
                 .sorted(Comparator.comparing(Film::getReleaseYear))
                 .skip((long) (page-1) * pageSize)
                 .limit(pageSize);
+    }
+
+    public Stream<Film> withActors() {
+        var streamConfig = StreamConfiguration.of(Film.class).joining(Film$.actors);
+        return jpaStreamer.stream(streamConfig);
     }
 }
