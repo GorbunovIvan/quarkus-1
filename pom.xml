@@ -101,6 +101,11 @@
               <artifactId>quarkus-extension-processor</artifactId>
               <version>${quarkus.platform.version}</version>
             </path>
+            <path>
+              <groupId>com.speedment.jpastreamer</groupId>
+              <artifactId>fieldgenerator-standard</artifactId>
+              <version>3.0.4</version>
+            </path>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
