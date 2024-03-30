@@ -63,6 +63,8 @@ public class Film {
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Actor> actors = new ArrayList<>();
 
     public Film(String title, Integer releaseYear) {

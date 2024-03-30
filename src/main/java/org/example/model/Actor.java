@@ -30,5 +30,7 @@ public class Actor {
     private Timestamp lastUpdate;
 
     @ManyToMany(mappedBy = "actors")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Film> films = new HashSet<>();
 }

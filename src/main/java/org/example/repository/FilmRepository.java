@@ -30,7 +30,8 @@ public class FilmRepository {
 
     public Optional<Film> findById(Integer filmId) {
         return jpaStreamer.stream(Film.class)
-                .filter(Film$.filmId.equal(filmId))
+//                .filter(Film$.filmId.equal(filmId)) // "equal" doesn't work due to some internal hibernate errors
+                .filter(Film$.filmId.in(filmId))
                 .findAny();
     }
 
