@@ -5,9 +5,12 @@ import com.speedment.jpastreamer.projection.Projection;
 import com.speedment.jpastreamer.streamconfiguration.StreamConfiguration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.example.model.Film;
 import org.example.model.Film$;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -45,5 +48,23 @@ public class FilmRepository {
     public Stream<Film> withActors() {
         var streamConfig = StreamConfiguration.of(Film.class).joining(Film$.actors);
         return jpaStreamer.stream(streamConfig);
+    }
+
+    @Transactional
+    public Film update(Integer filmId, Film film) {
+
+        var filmFoundOpt = findById(filmId);
+
+        if (filmFoundOpt.isEmpty()) {
+            throw new RuntimeException("Film with id '" + filmId + "' was not found");
+        }
+
+        var filmFound = filmFoundOpt.get();
+        filmFound.setLastUpdate(Timestamp.valueOf(LocalDateTime.now()));
+        filmFound.setTitle(film.getTitle());
+        filmFound.setDescription(film.getDescription());
+        filmFound.setReleaseYear(film.getReleaseYear());
+
+        return filmFound;
     }
 }

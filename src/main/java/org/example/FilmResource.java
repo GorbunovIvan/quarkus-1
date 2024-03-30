@@ -1,9 +1,7 @@
 package org.example;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.example.model.Film;
 import org.example.repository.FilmRepository;
@@ -59,5 +57,12 @@ public class FilmResource {
                         f.getTitle(),
                         f.getActors().stream().map(a -> String.format("%s %s", a.getFirstName(), a.getLastName())).collect(Collectors.joining(", "))))
                 .toList();
+    }
+
+    @PUT
+    @Path("/films/{filmId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Film updateFilm(Integer filmId, Film film) {
+        return filmRepository.update(filmId, film);
     }
 }
